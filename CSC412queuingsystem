@@ -1,0 +1,151 @@
+#include <iostream>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+struct Customer
+{
+    string name;
+    int serviceTime;
+};
+
+queue<Customer> line;
+
+int totalCustomers = 0;
+int totalServiceTime = 0;
+
+void addCustomer()
+{
+    Customer c;
+
+    cout << "\nEnter customer name: ";
+    cin >> c.name;
+
+    cout << "Enter service time (minutes): ";
+    cin >> c.serviceTime;
+
+    line.push(c);
+
+    totalCustomers++;
+    totalServiceTime += c.serviceTime;
+
+    cout << "\nCustomer added successfully.\n";
+}
+
+void serveCustomer()
+{
+    if (line.empty())
+    {
+        cout << "\nQueue is empty.\n";
+        return;
+    }
+
+    Customer c = line.front();
+    line.pop();
+
+    cout << "\nServing Customer...\n";
+    cout << "Name: " << c.name << endl;
+    cout << "Service Time: " << c.serviceTime << " minutes\n";
+}
+
+void displayQueue()
+{
+    if (line.empty())
+    {
+        cout << "\nQueue is empty.\n";
+        return;
+    }
+
+    queue<Customer> temp = line;
+
+    cout << "\nCurrent Queue:\n";
+
+    int position = 1;
+
+    while (!temp.empty())
+    {
+        Customer c = temp.front();
+
+        cout << position << ". "
+             << c.name
+             << " - "
+             << c.serviceTime
+             << " mins\n";
+
+        temp.pop();
+        position++;
+    }
+}
+
+void queueStatistics()
+{
+    cout << "\nQUEUE STATISTICS\n";
+    cout << "---------------------\n";
+
+    cout << "Total Customers Entered: "
+         << totalCustomers << endl;
+
+    cout << "Customers Remaining: "
+         << line.size() << endl;
+
+    if (totalCustomers > 0)
+    {
+        double average =
+            (double) totalServiceTime / totalCustomers;
+
+        cout << "Average Service Time: "
+             << average
+             << " minutes\n";
+    }
+}
+
+int main()
+{
+    int choice;
+
+    do
+    {
+        cout << "\n============================\n";
+        cout << " QUEUE SIMULATION SYSTEM\n";
+        cout << "============================\n";
+
+        cout << "1. Add Customer\n";
+        cout << "2. Serve Customer\n";
+        cout << "3. Display Queue\n";
+        cout << "4. Queue Statistics\n";
+        cout << "0. Exit\n";
+
+        cout << "\nEnter choice: ";
+        cin >> choice;
+
+        switch(choice)
+        {
+            case 1:
+                addCustomer();
+                break;
+
+            case 2:
+                serveCustomer();
+                break;
+
+            case 3:
+                displayQueue();
+                break;
+
+            case 4:
+                queueStatistics();
+                break;
+
+            case 0:
+                cout << "\nExiting program...\n";
+                break;
+
+            default:
+                cout << "\nInvalid choice.\n";
+        }
+
+    } while(choice != 0);
+
+    return 0;
+}
